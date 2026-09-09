@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Password generator — NAS Digital</title>
+    <meta
+      name="description"
+      content="Generate a strong password in your browser. Real cryptographic randomness, an honest count of the bits behind it, and nothing sent anywhere or stored."
+    />
+    <link rel="stylesheet" href="demo.css" />
+    <link rel="stylesheet" href="../dist/password-generator.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Password generator",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Any browser",
+        "description": "Generate a strong password using the browser's own cryptographic random number generator, with an honest count of how many bits of guessing it is worth. Nothing is sent anywhere and nothing is stored.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+        "featureList": [
+          "Uses crypto.getRandomValues, never Math.random",
+          "Shows the real entropy in bits instead of a Weak/Medium/Strong meter",
+          "Length from 8 to 64 characters",
+          "Optionally leaves out characters that read as each other",
+          "Generated on your own device, never sent anywhere and never stored"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <main class="wrap">
+      <p class="eyebrow">Free tool</p>
+      <h1>Password generator</h1>
+      <p class="lede">
+        Set a length, pick which characters are allowed, and take the result. It is generated on your
+        own device by the browser's own cryptographic random number generator — the same one used for
+        keys — and it is never sent anywhere.
+      </p>
+
+      <noscript>
+        <p class="pwg-note">
+          This one needs JavaScript switched on, not as a preference but because the whole point is
+          that the password is made on your machine rather than on a server somewhere.
+        </p>
+      </noscript>
+
+      <section
+        class="pwg glass"
+        data-pwg
+        style="padding: clamp(1rem, 4vw, 2rem); border-radius: 16px"
+      >
+        <div class="pwg-result">
+          <output class="pwg-out" data-pwg-output for="pwg-length"
+            >Switch JavaScript on to generate a password.</output
+          >
+          <button type="button" class="pwg-copy" data-pwg-copy>Copy</button>
+        </div>
+
+        <div class="pwg-messages">
+          <p class="pwg-bits" data-pwg-entropy></p>
+          <p class="pwg-note" data-pwg-note></p>
+          <p class="pwg-status" data-pwg-status role="status"></p>
+        </div>
+
+        <div class="pwg-controls">
+          <label class="pwg-length">
+            <span>Length — <b data-pwg-length-label>16</b> characters</span>
+            <input
+              type="range"
+              id="pwg-length"
+              min="8"
+              max="64"
+              step="1"
+              value="16"
+              data-pwg-length
+            />
+          </label>
+
+          <fieldset class="pwg-classes">
+            <legend>Characters allowed</legend>
+            <label><input type="checkbox" data-pwg-class="lower" checked /> <span>Lower case</span></label>
+            <label><input type="checkbox" data-pwg-class="upper" checked /> <span>Capitals</span></label>
+            <label><input type="checkbox" data-pwg-class="digit" checked /> <span>Digits</span></label>
+            <label><input type="checkbox" data-pwg-class="symbol" checked /> <span>Symbols</span></label>
+            <label class="pwg-lookalikes"
+              ><input type="checkbox" data-pwg-ambiguous checked />
+              <span>Leave out lookalikes <code>0 O 1 l I</code></span></label
+            >
+          </fieldset>
+
+          <button type="button" class="pwg-go" data-pwg-generate>Generate another</button>
+        </div>
+      </section>
+
+      <h2>Why a number and not a strength meter</h2>
+      <p>
+        Weak/Medium/Strong meters mislead in both directions. A long dictionary phrase scores well on
+        character variety while being trivially guessable, and a genuinely strong password can read
+        as "medium" for happening to contain no symbol. The figure shown above is the actual one:
+        how many bits of guessing the password is worth, given the alphabet it was drawn from.
+      </p>
+      <p>
+        The line beside it separates the two threats that differ by orders of magnitude. Guessing at
+        a login form is slow and rate-limited. Cracking a leaked database of password hashes is
+        neither, and it is the one that decides whether a password was long enough.
+      </p>
+
+      <h2>Every character is drawn evenly</h2>
+      <p>
+        Each character comes from the whole allowed alphabet with equal probability. Plenty of
+        generators instead guarantee one character from each category and then shuffle, which sounds
+        more thorough and is slightly worse: it skews the result and makes the bit count they print
+        beside it a small lie. The trade here is that a short password may happen to contain no
+        symbol — the tool says so when it does, and you can generate another.
+      </p>
+
+      <h2>Leaving out the lookalikes</h2>
+      <p>
+        <code>0</code> and <code>O</code>, <code>1</code> and <code>l</code> and <code>I</code> are
+        the ones people get wrong reading a password aloud or copying it off a screen. Leaving them
+        out is not free — it shrinks the alphabet, so it costs a little entropy, and the figure above
+        moves when you toggle it rather than pretending otherwise.
+      </p>
+
+      <h2>Nothing is stored, and nothing is sent</h2>
+      <p>
+        The password is generated in your browser and never leaves it. There is no history, no vault
+        and no way to get one back once it is off the screen — deliberately, because adding any of
+        that would turn a tool with nothing to protect into one that needs a security posture it was
+        never designed for.
+      </p>
+    </main>
+
+    <script src="../dist/password-generator.js" defer></script>
+  </body>
+</html>
