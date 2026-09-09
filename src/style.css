@@ -1,0 +1,193 @@
+/* Every colour and font here defers to the host page's own token if it has one,
+   and falls back to a value that stands on its own otherwise. The sibling tools
+   for the other brand hardcode their palette, which is fine when there is one
+   palette; this one has to look native on a dark site and still be legible on
+   its own demo page, and var(--host, fallback) does that without either page
+   knowing about the other. */
+
+.pwg {
+  --pwg-text: var(--text, #eef1f6);
+  --pwg-dim: var(--text-2, #a7b0bf);
+  --pwg-faint: var(--text-3, #6f7889);
+  --pwg-line: var(--line, rgba(255, 255, 255, 0.14));
+  --pwg-surface: var(--surface-2, rgba(255, 255, 255, 0.04));
+  --pwg-accent: var(--accent, #e0915a);
+  --pwg-mono: var(--f-mono, ui-monospace, "SF Mono", Menlo, Consolas, monospace);
+
+  display: grid;
+  gap: 1.1rem;
+  color: var(--pwg-text);
+}
+
+/* The password itself */
+
+.pwg-result {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: stretch;
+}
+
+.pwg-out {
+  flex: 1 1 16rem;
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--pwg-line);
+  border-radius: 12px;
+  background: var(--pwg-surface);
+  font-family: var(--pwg-mono);
+  font-size: clamp(1rem, 0.85rem + 0.8vw, 1.35rem);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  /* A 64-character password has to wrap somewhere, and break-all is the only
+     value that will break inside a run of punctuation. */
+  word-break: break-all;
+  user-select: all;
+}
+
+.pwg-copy {
+  flex: 0 0 auto;
+  padding: 0.85rem 1.15rem;
+  border: 1px solid var(--pwg-line);
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pwg-copy:hover {
+  border-color: var(--pwg-accent);
+  color: var(--pwg-accent);
+}
+
+/* What the password is worth, and anything worth saying about it */
+
+/* One grid child rather than three, so the two message lines do not each take
+   the container's full gap. They keep their reserved height - the note rewrites
+   on every draw and the controls must not jump while the slider is dragged. */
+.pwg-messages {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.pwg-bits {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--pwg-dim);
+}
+
+.pwg-note,
+.pwg-status {
+  margin: 0;
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--pwg-faint);
+}
+
+.pwg-status:not(:empty) {
+  color: var(--pwg-accent);
+}
+
+/* Controls */
+
+.pwg-controls {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--pwg-line);
+  border-radius: 14px;
+  background: var(--pwg-surface);
+}
+
+.pwg-length {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.pwg-length > span {
+  font-size: 0.85rem;
+  color: var(--pwg-dim);
+}
+
+.pwg-length b {
+  color: var(--pwg-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.pwg-length input[type="range"] {
+  width: 100%;
+  accent-color: var(--pwg-accent);
+}
+
+.pwg-classes {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 30rem) {
+  .pwg-classes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pwg-classes legend {
+  padding: 0 0 0.45rem;
+  font-size: 0.85rem;
+  color: var(--pwg-dim);
+}
+
+.pwg-classes label {
+  display: flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.pwg-classes input[type="checkbox"] {
+  accent-color: var(--pwg-accent);
+}
+
+.pwg-classes code {
+  font-family: var(--pwg-mono);
+  color: var(--pwg-dim);
+}
+
+/* Not a fifth character class - it modifies the four above - so it gets its own
+   row across the full width rather than sitting in the two-column flow, where a
+   long label overflows its column. */
+.pwg-lookalikes {
+  grid-column: 1 / -1;
+  margin-top: 0.3rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--pwg-line);
+}
+
+.pwg-go {
+  justify-self: start;
+  padding: 0.7rem 1.2rem;
+  border: 1px solid var(--pwg-accent);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--pwg-accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pwg-go:hover {
+  background: var(--pwg-accent);
+  color: var(--ink, #08090d);
+}
+
+.pwg-copy:focus-visible,
+.pwg-go:focus-visible,
+.pwg-classes input:focus-visible,
+.pwg-length input:focus-visible {
+  outline: 2px solid var(--pwg-accent);
+  outline-offset: 2px;
+}

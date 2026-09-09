@@ -1,0 +1,41 @@
+{
+  "name": "nasdigital-password-generator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Generate a strong password in the browser, with an honest count of the bits behind it. Nothing is sent anywhere and nothing is stored.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "vitest run",
+    "lint": "tsc --noEmit",
+    "smoke": "npm run build && node scripts/smoke.mjs",
+    "demo": "npm run build && node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "@nasdigitaluk/withnate-tool-core": "^0.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "author": "Nathan Graves",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N-Graves/nasdigital-password-generator.git"
+  },
+  "bugs": { "url": "https://github.com/N-Graves/nasdigital-password-generator/issues" },
+  "homepage": "https://github.com/N-Graves/nasdigital-password-generator#readme",
+  "keywords": [
+    "password",
+    "generator",
+    "entropy",
+    "crypto",
+    "browser",
+    "client-side",
+    "nasdigital"
+  ]
+}
